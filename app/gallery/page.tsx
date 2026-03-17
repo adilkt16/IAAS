@@ -58,7 +58,7 @@ export default function GalleryPage() {
   if (!state.zip) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-neutral-600 border-t-purple-500" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-app-line border-t-brand-primary" />
       </div>
     );
   }
@@ -73,23 +73,23 @@ export default function GalleryPage() {
   return (
     <main className="min-h-screen">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-neutral-800 bg-[#0a0a0a]/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+      <header className="sticky top-0 z-40 border-b border-app-line/80 bg-app-bg/80 shadow-panel backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3">
           <div className="flex items-center gap-3">
             <SiteLogo size={30} textSizeClassName="text-xl" />
-            <div className="hidden text-xs text-neutral-500 sm:block">
+            <div className="hidden rounded-full border border-app-line bg-app-panel px-3 py-1 text-xs text-app-textMuted sm:block">
               {state.posts.length} posts &middot; {totalMedia} media files
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <DownloadButton
               onClick={handleDownloadCategory}
               label={`Download ${state.filter === "all" ? "All" : state.filter + "s"}`}
             />
             <button
               onClick={handleReset}
-              className="rounded-lg bg-neutral-800 px-3 py-2 text-sm text-neutral-300 transition-colors hover:bg-neutral-700"
+              className="rounded-lg border border-app-line bg-app-panel px-3 py-2 text-sm text-app-textMuted transition-all duration-200 ease-smooth hover:border-brand-primary/60 hover:bg-app-panelStrong hover:text-app-text"
             >
               New Upload
             </button>
@@ -98,10 +98,10 @@ export default function GalleryPage() {
       </header>
 
       {/* Content */}
-      <div className="mx-auto max-w-7xl px-4 py-6">
+      <div className="mx-auto max-w-7xl animate-fade-in px-4 py-6">
         {/* Stats bar */}
         {dateRange && (
-          <p className="mb-4 text-xs text-neutral-500">{dateRange}</p>
+          <p className="mb-4 text-xs tracking-wide text-app-textMuted">{dateRange}</p>
         )}
 
         {/* Category tabs */}

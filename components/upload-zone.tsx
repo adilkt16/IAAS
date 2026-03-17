@@ -47,9 +47,9 @@ export default function UploadZone() {
 
   if (state.loading) {
     return (
-      <div className="flex flex-col items-center justify-center gap-4 p-12">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-neutral-700 border-t-purple-500" />
-        <p className="text-lg text-neutral-300">{state.loadingMessage}</p>
+      <div className="flex flex-col items-center justify-center gap-4 rounded-panel border border-app-line bg-app-panel/75 p-12">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-app-line border-t-brand-primary" />
+        <p className="text-lg text-app-text">{state.loadingMessage}</p>
       </div>
     );
   }
@@ -59,14 +59,14 @@ export default function UploadZone() {
       onDrop={onDrop}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
-      className={`relative flex flex-col items-center justify-center gap-6 rounded-2xl border-2 border-dashed p-16 transition-colors ${
+      className={`relative flex flex-col items-center justify-center gap-6 rounded-2xl border-2 border-dashed p-10 text-center transition-all duration-200 ease-smooth sm:p-16 ${
         dragOver
-          ? "border-purple-500 bg-purple-500/10"
-          : "border-neutral-700 bg-neutral-900/50 hover:border-neutral-500"
+          ? "border-brand-primary bg-brand-primary/10 shadow-glow"
+          : "border-app-line bg-app-panel/60 hover:border-brand-primary/50"
       }`}
     >
       {/* Upload icon */}
-      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-orange-500">
+      <div className="flex h-20 w-20 animate-pulse-soft items-center justify-center rounded-full bg-gradient-to-br from-brand-primary to-brand-accent shadow-glow">
         <svg
           className="h-10 w-10 text-white"
           fill="none"
@@ -83,15 +83,15 @@ export default function UploadZone() {
       </div>
 
       <div className="text-center">
-        <p className="text-xl font-semibold text-white">
+        <p className="text-xl font-semibold text-app-text">
           Drop your Instagram export ZIP here
         </p>
-        <p className="mt-2 text-sm text-neutral-400">
+        <p className="mt-2 text-sm text-app-textMuted">
           or click to browse files
         </p>
       </div>
 
-      <label className="cursor-pointer rounded-lg bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-3 font-medium text-white transition-opacity hover:opacity-90">
+      <label className="interactive-lift cursor-pointer rounded-lg bg-gradient-to-r from-brand-primary to-brand-accent px-6 py-3 font-semibold text-slate-950 shadow-panel">
         Choose ZIP File
         <input
           type="file"
@@ -101,8 +101,8 @@ export default function UploadZone() {
         />
       </label>
 
-      <div className="mt-4 max-w-md text-center text-xs text-neutral-500">
-        <p className="font-medium text-neutral-400">How to get your data:</p>
+      <div className="mt-2 max-w-md text-center text-xs text-app-textMuted/85">
+        <p className="font-semibold text-app-textMuted">How to get your data:</p>
         <p className="mt-1">
           Instagram &rarr; Settings &rarr; Accounts Center &rarr; Your information
           and permissions &rarr; Download your information &rarr; Download or

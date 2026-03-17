@@ -24,7 +24,7 @@ export default function SiteLogo({
       />
       {showText ? (
         <span
-          className={`bg-gradient-to-r from-purple-400 to-orange-400 bg-clip-text font-bold text-transparent ${textSizeClassName}`}
+          className={`bg-gradient-to-r from-brand-primary via-brand-primarySoft to-brand-accent bg-clip-text font-semibold tracking-tight text-transparent ${textSizeClassName}`}
         >
           Instagram Export Viewer
         </span>

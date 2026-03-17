@@ -24,16 +24,16 @@ export default function CategoryTabs() {
           <button
             key={key}
             onClick={() => setFilter(key)}
-            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+            className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200 ease-smooth ${
               isActive
-                ? "bg-gradient-to-r from-purple-600 to-orange-500 text-white"
-                : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700"
+                ? "border-brand-primary/70 bg-gradient-to-r from-brand-primary to-brand-accent text-slate-950 shadow-glow"
+                : "border-app-line bg-app-panel text-app-textMuted hover:border-brand-primary/40 hover:bg-app-panelStrong hover:text-app-text"
             }`}
           >
             {label}
             <span
-              className={`ml-1.5 ${
-                isActive ? "text-white/80" : "text-neutral-500"
+              className={`ml-2 rounded-full px-2 py-0.5 text-[11px] ${
+                isActive ? "bg-slate-950/20 text-slate-900" : "bg-app-panelStrong text-app-textMuted"
               }`}
             >
               {count}

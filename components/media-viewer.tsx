@@ -62,17 +62,17 @@ export default function MediaViewer({ post, onClose, onPrev, onNext }: MediaView
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
-        className="relative flex max-h-[95vh] w-full max-w-4xl flex-col gap-4 p-4"
+        className="relative flex max-h-[95vh] w-full max-w-4xl flex-col gap-4 p-3 sm:p-4"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute -right-2 -top-2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+          className="absolute right-1 top-1 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-app-line bg-app-panel/90 text-app-text transition-colors hover:border-brand-primary/60 hover:bg-app-panelStrong sm:-right-2 sm:-top-2"
         >
           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -83,7 +83,7 @@ export default function MediaViewer({ post, onClose, onPrev, onNext }: MediaView
         {onPrev && post.items.length <= 1 && (
           <button
             onClick={onPrev}
-            className="absolute -left-14 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+            className="absolute left-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-app-line bg-app-panel/90 text-app-text transition-colors hover:border-brand-primary/60 hover:bg-app-panelStrong sm:-left-14"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -93,7 +93,7 @@ export default function MediaViewer({ post, onClose, onPrev, onNext }: MediaView
         {onNext && post.items.length <= 1 && (
           <button
             onClick={onNext}
-            className="absolute -right-14 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+            className="absolute right-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-app-line bg-app-panel/90 text-app-text transition-colors hover:border-brand-primary/60 hover:bg-app-panelStrong sm:-right-14"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -102,7 +102,7 @@ export default function MediaViewer({ post, onClose, onPrev, onNext }: MediaView
         )}
 
         {/* Media content */}
-        <div className="flex items-center justify-center">
+        <div className="surface-panel flex items-center justify-center rounded-panel p-2 sm:p-3">
           <CarouselViewer
             zipPaths={post.items.map((item) => ({
               zipPath: item.zipPath,
@@ -114,28 +114,28 @@ export default function MediaViewer({ post, onClose, onPrev, onNext }: MediaView
         </div>
 
         {/* Info panel */}
-        <div className="rounded-xl bg-neutral-900/80 p-4">
+        <div className="surface-panel rounded-panel p-4">
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0 flex-1">
               {post.caption && (
-                <p className="whitespace-pre-wrap text-sm text-neutral-200">
+                <p className="whitespace-pre-wrap text-sm leading-relaxed text-app-text sm:text-base">
                   {post.caption}
                 </p>
               )}
-              <div className="mt-2 flex items-center gap-3 text-xs text-neutral-500">
+              <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-app-textMuted">
                 <span>{post.dateString}</span>
-                <span className="rounded bg-neutral-800 px-1.5 py-0.5 uppercase">
+                <span className="rounded-full border border-brand-primary/40 bg-app-panelStrong px-2 py-0.5 uppercase text-app-text">
                   {post.type}
                 </span>
                 {post.items.length > 1 && (
-                  <span>
+                  <span className="rounded-full border border-app-line bg-app-panel px-2 py-0.5">
                     {carouselIndex + 1} / {post.items.length}
                   </span>
                 )}
               </div>
             </div>
 
-            <div className="flex shrink-0 items-center gap-2">
+            <div className="flex shrink-0 items-center gap-2 self-end sm:self-auto">
               <DownloadButton
                 onClick={handleDownloadCurrent}
                 label={post.items.length > 1 ? "This" : "Download"}

@@ -16,7 +16,7 @@ function TypeBadge({ type }: { type: MediaPost["type"] }) {
     story: "STR",
   };
   return (
-    <span className="rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-sm">
+    <span className="rounded bg-app-panelStrong/90 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-app-text backdrop-blur-sm">
       {icons[type]}
     </span>
   );
@@ -47,7 +47,7 @@ export default function MediaCard({ post, onClick }: MediaCardProps) {
     <div
       ref={ref}
       onClick={onClick}
-      className="group relative aspect-square cursor-pointer overflow-hidden rounded-lg bg-neutral-800"
+      className="group interactive-lift relative aspect-square cursor-pointer overflow-hidden rounded-lg border border-app-line/80 bg-app-panel"
     >
       {/* Thumbnail */}
       {blobUrl ? (
@@ -69,27 +69,27 @@ export default function MediaCard({ post, onClick }: MediaCardProps) {
       ) : (
         <div className="flex h-full w-full items-center justify-center">
           {loading ? (
-            <div className="h-6 w-6 animate-spin rounded-full border-2 border-neutral-600 border-t-purple-500" />
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-app-line border-t-brand-primary" />
           ) : (
-            <div className="h-full w-full bg-neutral-800" />
+            <div className="h-full w-full bg-app-panel" />
           )}
         </div>
       )}
 
       {/* Overlay icons */}
-      <div className="absolute right-2 top-2 flex items-center gap-1.5">
+      <div className="absolute right-2 top-2 flex items-center gap-1.5 rounded-lg border border-app-line/70 bg-black/35 p-1.5 backdrop-blur-sm">
         {firstItem.isVideo && <VideoIcon />}
         {post.type === "carousel" && <CarouselIcon />}
         <TypeBadge type={post.type} />
       </div>
 
       {/* Hover overlay */}
-      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100">
+      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
         <div className="p-3">
           {post.caption && (
-            <p className="line-clamp-2 text-xs text-white/90">{post.caption}</p>
+            <p className="line-clamp-2 text-xs text-white">{post.caption}</p>
           )}
-          <p className="mt-1 text-[10px] text-white/60">{post.dateString}</p>
+          <p className="mt-1 text-[10px] text-app-textMuted">{post.dateString}</p>
         </div>
       </div>
     </div>

@@ -26,15 +26,15 @@ export default function DownloadButton({ onClick, label, small }: DownloadButton
     <button
       onClick={handleClick}
       disabled={downloading}
-      className={`inline-flex items-center gap-1.5 rounded-lg font-medium transition-colors ${
+      className={`inline-flex items-center gap-1.5 rounded-lg font-medium transition-all duration-200 ease-smooth ${
         small
-          ? "bg-white/10 px-3 py-1.5 text-xs text-white hover:bg-white/20"
-          : "bg-gradient-to-r from-purple-600 to-orange-500 px-4 py-2 text-sm text-white hover:opacity-90"
-      } disabled:opacity-50`}
+          ? "border border-app-line bg-app-panel px-3 py-1.5 text-xs text-app-text hover:border-brand-primary/60 hover:bg-app-panelStrong"
+          : "interactive-lift bg-gradient-to-r from-brand-primary to-brand-accent px-4 py-2 text-sm text-slate-950 shadow-panel hover:brightness-105"
+      } disabled:cursor-not-allowed disabled:opacity-50`}
     >
       {downloading ? (
         <>
-          <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+          <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-800/30 border-t-slate-900" />
           Downloading...
         </>
       ) : (
