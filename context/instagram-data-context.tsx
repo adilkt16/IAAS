@@ -10,6 +10,7 @@ import {
 import type { AppState, AppAction, CategoryFilter, MediaPost } from "@/types/instagram";
 import { processZipFile } from "@/lib/zip-processor";
 import { parseInstagramExport } from "@/lib/instagram-parser";
+import { saveZipFile, loadZipFile as loadZipFromDB } from "@/lib/upload-store";
 import type JSZip from "jszip";
 
 const initialState: AppState = {
@@ -55,6 +56,7 @@ function reducer(state: AppState, action: AppAction): AppState {
 interface ContextValue {
   state: AppState;
   loadZipFile: (file: File) => Promise<void>;
+  loadFromHistory: (name: string) => Promise<void>;
   setFilter: (filter: CategoryFilter) => void;
   cacheBlob: (zipPath: string, blobUrl: string) => void;
   reset: () => void;
@@ -76,6 +78,34 @@ export function InstagramDataProvider({ children }: { children: ReactNode }) {
       const posts = await parseInstagramExport(structure);
 
       dispatch({ type: "SET_DATA", posts, zip: structure.zip });
+
+      // Save ZIP data to IndexedDB for re-opening later
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        await saveZipFile(file.name, arrayBuffer);
+      } catch {
+        // IndexedDB may not be available; ignore
+      }
+
+      // Save to upload history in localStorage (keep last 2)
+      try {
+        const historyRaw = localStorage.getItem("iaas_upload_history");
+        const history: Array<{ name: string; date: string; postCount: number; mediaCount: number }> =
+          historyRaw ? JSON.parse(historyRaw) : [];
+        const mediaCount = posts.reduce((sum, p) => sum + p.items.length, 0);
+        const entry = {
+          name: file.name,
+          date: new Date().toISOString(),
+          postCount: posts.length,
+          mediaCount,
+        };
+        // Remove duplicate by name if exists, then prepend
+        const filtered = history.filter((h) => h.name !== file.name);
+        const updated = [entry, ...filtered].slice(0, 2);
+        localStorage.setItem("iaas_upload_history", JSON.stringify(updated));
+      } catch {
+        // localStorage may not be available; ignore
+      }
     } catch (err) {
       console.error("Failed to process ZIP:", err);
       dispatch({
@@ -83,6 +113,38 @@ export function InstagramDataProvider({ children }: { children: ReactNode }) {
         message: "Error: Failed to process the ZIP file. Make sure it's a valid Instagram data export.",
       });
       // Reset loading after showing error
+      setTimeout(() => dispatch({ type: "RESET" }), 3000);
+    }
+  }, []);
+
+  const loadFromHistory = useCallback(async (name: string) => {
+    try {
+      dispatch({ type: "SET_LOADING", message: "Retrieving saved export..." });
+      const arrayBuffer = await loadZipFromDB(name);
+      if (!arrayBuffer) {
+        dispatch({
+          type: "SET_LOADING",
+          message: "Error: Saved data not found. Please re-upload the file.",
+        });
+        setTimeout(() => dispatch({ type: "RESET" }), 3000);
+        return;
+      }
+
+      const file = new File([arrayBuffer], name, { type: "application/zip" });
+
+      dispatch({ type: "SET_LOADING", message: "Opening ZIP file..." });
+      const structure = await processZipFile(file);
+
+      dispatch({ type: "SET_LOADING", message: "Parsing Instagram data..." });
+      const posts = await parseInstagramExport(structure);
+
+      dispatch({ type: "SET_DATA", posts, zip: structure.zip });
+    } catch (err) {
+      console.error("Failed to load from history:", err);
+      dispatch({
+        type: "SET_LOADING",
+        message: "Error: Failed to load saved data. Please re-upload the file.",
+      });
       setTimeout(() => dispatch({ type: "RESET" }), 3000);
     }
   }, []);
@@ -120,7 +182,7 @@ export function InstagramDataProvider({ children }: { children: ReactNode }) {
 
   return (
     <InstagramDataContext.Provider
-      value={{ state, loadZipFile, setFilter, cacheBlob, reset, getFilteredPosts, getCounts }}
+      value={{ state, loadZipFile, loadFromHistory, setFilter, cacheBlob, reset, getFilteredPosts, getCounts }}
     >
       {children}
     </InstagramDataContext.Provider>

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useInstagramData } from "@/context/instagram-data-context";
 import UploadZone from "@/components/upload-zone";
+import PastUploads from "@/components/past-uploads";
 import SiteLogo from "@/components/site-logo";
 
 export default function HomePage() {
@@ -32,6 +33,11 @@ export default function HomePage() {
 
         <div className="animate-fade-in rounded-panel border border-app-line/80 bg-app-panel/75 p-2 shadow-panel backdrop-blur">
           <UploadZone />
+        </div>
+
+        {/* Past uploads */}
+        <div className="mt-6 animate-fade-in">
+          <PastUploads />
         </div>
 
         {/* Privacy note */}
